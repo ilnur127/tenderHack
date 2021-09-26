@@ -27,7 +27,4 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-style: normal;
 }
-#app {
-  position: relative;
-}
 </style>

@@ -88,8 +88,7 @@ export default {
       count: 0
     }
   },
-  async created () {
-    await this.$store.dispatch('fetchInfo', this.$route.params.id)
+  async updated () {
     this.count = this.$store.getters.info.sellers.length
   },
   methods: {
@@ -119,8 +118,8 @@ export default {
 }
 .cardInfo {
     display: flex;
-    margin-top: 30px;
-    margin-bottom: 40px;
+    padding-top: 30px;
+    padding-bottom: 40px;
 }
 .info {
     margin-left: 20px

@@ -48,10 +48,10 @@
         </div>
         <div class='NavBar--block-item rigthMenuBlock'>
             <div class='rigthMenuBlock--FIO'>
-                <div class='rigthMenuBlock--FIO-header'>Гареев Ильнур Ильдарович</div>
-                <div class='rigthMenuBlock--FIO-firm'>ЗАО Торос</div>
+                <div class='rigthMenuBlock--FIO-header'>{{infoUser.login}}</div>
+                <div class='rigthMenuBlock--FIO-firm'>{{infoUser.type}}</div>
             </div>
-            <div  class='rigthMenuBlock--img'>
+            <div  class='rigthMenuBlock--img' @click='$emit("showModal")'>
                 <img src='/lk.svg' />
             </div>
         </div>
@@ -59,6 +59,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+export default {
+  computed: {
+    ...mapGetters(['infoUser'])
+  }
+}
 </script>
 
 <style>

@@ -1,12 +1,14 @@
 <template>
-    <NavBar></NavBar>
+    <NavBar
+      @showModal='showModal'
+    />
     <main>
         <div class="app-page">
             <router-view />
         </div>
     </main>
-    <Notification></Notification>
-    <authModel></authModel>
+    <Notification />
+    <authModel v-if='needModal' @closeModal='needModal = false'/>
 </template>
 
 <script>
@@ -15,7 +17,14 @@ import Notification from '../components/Notification'
 import authModel from '../components/auth'
 export default {
   data () {
-
+    return {
+      needModal: false
+    }
+  },
+  methods: {
+    showModal () {
+      this.needModal = true
+    }
   },
   components: {
     NavBar,

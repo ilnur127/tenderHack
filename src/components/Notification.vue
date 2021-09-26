@@ -1,4 +1,5 @@
 <template>
+
     <div
         class='notification'
         :class='{smallVersionNotification: !show, fullVersionNotification: show}'
@@ -61,7 +62,7 @@
                 </div>
             </div>
             <div class='mainBlockNotification'>
-                <div class='mainBlockNotification--header'>Рекомендовано для вас</div>
+                <div class='mainBlockNotification--header'>{{ (infoUser.type === 'customer') ? 'Рекомендовано для вас' : 'Товары рекомендованые вашим заказчикам'}}</div>
                 <div class='mainBlockNotification--headerTitle'>на основе ваших заказов</div>
                 <div class='hr'></div>
                 <div
@@ -69,7 +70,7 @@
                 >
                     <div
                         class='mainBlockNotification--card'
-                        v-for='i of 3'
+                        v-for='i of pieceNotification[period]'
                         :key='i'
                     >
                         <div>
@@ -77,25 +78,24 @@
                                 <img src='/MaskGroup.svg' style='width:100px' />
                             </div>
                             <div class='mainBlockNotification--card-price'>
-                                1300 руб.
+                                Цена
                             </div>
                         </div>
                         <div class='mainBlockNotification--card-info'>
-                            <div class='mainBlockNotification--card-info--name'>
-                                Бумага для офисной техники SvetoCopy
+                            <div class='mainBlockNotification--card-info--name' v-for='name of i.name' :key='name'>
+                                {{name}}
                             </div>
                             <div class='mainBlockNotification--card-info--character'>
-                                (А4, марка С, 80г/кв.м 500 листов)
                             </div>
                             <div class='mainBlockNotification--card-info--category'>
                                 Категория:
                             </div>
-                            <div class='mainBlockNotification--card-info--categoryText'>
-                                Бумага для офисной техники белая
+                            <div class='mainBlockNotification--card-info--categoryText' v-for='typeO of i.type' :key='typeO'>
+                                {{typeO}}
                             </div>
                             <div
                                 class='mainBlockNotification--card-info--detail'
-                                @click.stop='goDetail(i)'
+                                @click.stop='goDetail(i.id)'
                             >
                                 <div>Подробнее</div>
                                 <img src='/notificationBack.svg' style='width:7px' />
@@ -109,12 +109,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
       show: false,
       period: 'week'
     }
+  },
+  async created () {
+    await this.$store.dispatch('fetchPieceNotification')
   },
   methods: {
     showNotification () {
@@ -126,14 +131,22 @@ export default {
     changePeriod (period) {
       this.period = period
     },
-    goDetail (id) {
+    async goDetail (id) {
+      let Id = ''
+      for (const i in id) {
+        Id = id[i]
+      }
       this.show = false
-      this.$router.push(`/detail/${id}`)
+      this.$router.push(`/detail/${Id}`)
+      await this.$store.dispatch('fetchInfo', Id)
     },
     goToAll () {
       this.show = false
       this.$router.push('/recomends')
     }
+  },
+  computed: {
+    ...mapGetters(['infoUser', 'pieceNotification'])
   }
 }
 </script>
@@ -147,6 +160,7 @@ export default {
         padding: 10px;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
+        padding-bottom: 0px;
         width: 44%;
         transition: all 0.5s ease-out;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.69) 100%);
@@ -207,7 +221,7 @@ export default {
     }
     .period {
         margin-left: -10px;
-        margin-top: -100%;
+        /*margin-top: -100%;*/
     }
     .period--item {
         height: 52px;

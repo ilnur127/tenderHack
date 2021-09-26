@@ -1,9 +1,12 @@
 import { createStore } from 'vuex'
 import record from './record'
+import auth from './authForm'
+import user from './user'
+import recomend from './recomend'
 
 export default createStore({
   state: {
-    host: 'ff1d-94-180-248-211.eu.ngrok.io'
+    host: '35b6-94-180-252-116.eu.ngrok.io'
   },
   mutations: {
   },
@@ -13,6 +16,9 @@ export default createStore({
     getHost: (s) => s.host
   },
   modules: {
-    record
+    record,
+    auth,
+    user,
+    recomend
   }
 })
